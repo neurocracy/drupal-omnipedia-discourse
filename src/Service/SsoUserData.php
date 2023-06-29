@@ -44,7 +44,7 @@ class SsoUserData implements SsoUserDataInterface {
   /**
    * {@inheritdoc}
    */
-  public function alterParameters(array $parameters): void {
+  public function alterParameters(array &$parameters): void {
 
     /** @var \Drupal\user\UserInterface|null */
     $user = $this->userStorage->load($parameters['external_id']);

@@ -12,11 +12,11 @@ interface SsoUserDataInterface {
   /**
    * Alter Discourse SSO parameters.
    *
-   * @param array $parameters
+   * @param array &$parameters
    *
    * @see \Drupal\discourse_sso\Controller\DiscourseSsoController::validate()
    *   Builds parameters and invokes \hook_discourse_sso_parameters_alter().
    */
-  public function alterParameters(array $parameters): void;
+  public function alterParameters(array &$parameters): void;
 
 }
