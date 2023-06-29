@@ -21,8 +21,7 @@ class SsoUserData implements SsoUserDataInterface {
   /**
    * The name of the Discourse SSO field indicating an early supporter.
    */
-  protected const EARLY_SUPPORTER_DISCOURSE_FIELD_NAME =
-    'custom.early_supporter';
+  protected const EARLY_SUPPORTER_DISCOURSE_FIELD_NAME = 'custom.user_field_1';
 
   /**
    * The Drupal user entity storage.
