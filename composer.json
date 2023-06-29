@@ -16,7 +16,15 @@
   ],
   "require": {
     "php": "^8",
+    "cweagans/composer-patches": "^1.7",
     "drupal/core": "^9.5 || ^10.0",
     "drupal/discourse_sso": "^2.0@RC"
+  },
+  "extra": {
+    "patches": {
+      "drupal/discourse_sso": {
+        "Sites that don't grant 'access content' permission to anonymous users result in access denied when redirected to the Drupal site for log in [#3371060]: https://www.drupal.org/project/discourse_sso/issues/3371060": "https://raw.githubusercontent.com/neurocracy/drupal-omnipedia-discourse/1.x/patches/drupal/discourse_sso/3371060-add-new-login-permission.patch"
+      }
+    }
   }
 }
