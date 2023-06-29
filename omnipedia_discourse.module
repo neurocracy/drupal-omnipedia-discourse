@@ -1,0 +1,18 @@
+<?php
+
+declare(strict_types=1);
+
+/**
+ * Implements \hook_discourse_sso_parameters_alter().
+ *
+ * @see \Drupal\omnipedia_discourse\Service\SsoUserDataInterface::alterParameters()
+ */
+function omnipedia_discourse_discourse_sso_parameters_alter(
+  array &$parameters
+): void {
+
+  \Drupal::service('omnipedia_discourse.sso_user_data')->alterParameters(
+    $parameters
+  );
+
+}

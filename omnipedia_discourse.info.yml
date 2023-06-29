@@ -6,3 +6,4 @@ core_version_requirement: ^9.5 || ^10.0
 
 dependencies:
   - discourse_sso:discourse_sso
+  - drupal:user

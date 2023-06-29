@@ -1,0 +1,6 @@
+services:
+
+  omnipedia_discourse.sso_user_data:
+    class: Drupal\omnipedia_discourse\Service\SsoUserData
+    arguments:
+      - '@entity_type.manager'
