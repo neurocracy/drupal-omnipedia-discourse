@@ -53,16 +53,22 @@ class SsoUserData implements SsoUserDataInterface {
       return;
     }
 
-    try {
+    if (!$user->hasField(self::EARLY_SUPPORTER_DRUPAL_FIELD_NAME)) {
 
-      $fieldValue = $user->get(
-        self::EARLY_SUPPORTER_DRUPAL_FIELD_NAME
-      )->get(0)->getString();
+      $parameters['custom.early_supporter'] = false;
 
-    // @todo Log this?
-    } catch (\Exception $exception) {
+      return;
 
-      $parameters[self::EARLY_SUPPORTER_DISCOURSE_FIELD_NAME] = false;
+    }
+
+    /** @var Drupal\Core\TypedData\TypedDataInterface|null */
+    $fieldData = $user->get(
+      self::EARLY_SUPPORTER_DRUPAL_FIELD_NAME
+    )->get(0);
+
+    if (!\is_object($fieldData)) {
+
+      $parameters['custom.early_supporter'] = false;
 
       return;
 
@@ -70,7 +76,7 @@ class SsoUserData implements SsoUserDataInterface {
 
     $parameters[
       self::EARLY_SUPPORTER_DISCOURSE_FIELD_NAME
-    ] = (bool) $fieldValue;
+    ] = (bool) $fieldData->getString();
 
   }
 
