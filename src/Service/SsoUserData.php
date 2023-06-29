@@ -55,7 +55,7 @@ class SsoUserData implements SsoUserDataInterface {
 
     if (!$user->hasField(self::EARLY_SUPPORTER_DRUPAL_FIELD_NAME)) {
 
-      $parameters['custom.early_supporter'] = false;
+      $parameters[self::EARLY_SUPPORTER_DISCOURSE_FIELD_NAME] = false;
 
       return;
 
@@ -68,7 +68,7 @@ class SsoUserData implements SsoUserDataInterface {
 
     if (!\is_object($fieldData)) {
 
-      $parameters['custom.early_supporter'] = false;
+      $parameters[self::EARLY_SUPPORTER_DISCOURSE_FIELD_NAME] = false;
 
       return;
 
