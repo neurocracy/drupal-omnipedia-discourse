@@ -1,0 +1,22 @@
+{
+  "name": "drupal/omnipedia_discourse",
+  "description": "Omnipedia - Discourse",
+  "type": "drupal-custom-module",
+  "license": "GPL-2.0-or-later",
+  "support": {
+    "docs": "https://github.com/neurocracy/drupal-omnipedia-discourse",
+    "source": "https://github.com/neurocracy/drupal-omnipedia-discourse"
+  },
+  "authors": [
+    {
+      "name": "Ambient.Impact",
+      "homepage": "https://ambientimpact.com/",
+      "role": "Developer"
+    }
+  ],
+  "require": {
+    "php": "^8",
+    "drupal/core": "^9.5 || ^10.0",
+    "drupal/discourse_sso": "^2.0@RC"
+  }
+}
