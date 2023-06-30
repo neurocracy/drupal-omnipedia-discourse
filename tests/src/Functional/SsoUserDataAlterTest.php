@@ -120,4 +120,28 @@ class SsoUserDataAlterTest extends BrowserTestBase {
 
   }
 
+  /**
+   * Test that the Discourse field is set to false if user is missing field.
+   */
+  public function testUserMissingField(): void {
+
+    /** @var \Drupal\user\UserInterface */
+    $user = $this->drupalCreateUser();
+
+    $this->assertEquals(
+      false, $user->hasField(self::EARLY_SUPPORTER_DRUPAL_FIELD_NAME),
+      'The early supporter field should not be present on the user in this test.'
+    );
+
+    $parameters = ['external_id' => $user->id()];
+
+    $this->ssoUserData->alterParameters($parameters);
+
+    $this->assertEquals([
+      'external_id' => $user->id(),
+      self::EARLY_SUPPORTER_DISCOURSE_FIELD_NAME => false,
+    ], $parameters);
+
+  }
+
 }
