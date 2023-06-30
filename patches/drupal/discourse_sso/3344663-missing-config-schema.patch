@@ -1,0 +1,28 @@
+diff --git a/config/schema/discourse_sso.schema.yml b/config/schema/discourse_sso.schema.yml
+new file mode 100644
+index 0000000000000000000000000000000000000000..a97a03eced85d490f6b4b9f9bfff6dd3755b5369
+--- /dev/null
++++ b/config/schema/discourse_sso.schema.yml
+@@ -0,0 +1,22 @@
++discourse_sso.settings:
++  type: config_object
++  label: 'Discourse SSO settings'
++  mapping:
++    discourse_server:
++      type: uri
++      label: 'Discourse URL'
++    discourse_sso_secret:
++      type: string
++      label: 'SSO Secret'
++    api_username:
++      type: string
++      label: 'API user name'
++    api_key:
++      type: string
++      label: 'API Key'
++    user_discourse_username_field:
++      type: string
++      label: 'Alternative Discourse username field'
++    user_real_name_field:
++      type: string
++      label: 'User real name field'

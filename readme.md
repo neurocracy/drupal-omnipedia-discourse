@@ -101,4 +101,6 @@ The following patches are supplied (see [Patching](#patching) above):
 
 * [Discourse SSO module](https://www.drupal.org/project/discourse_sso):
 
+  * [Missing config schema [#3344663]](https://www.drupal.org/project/discourse_sso/issues/3344663)
+
   * [Sites that don't grant 'access content' permission to anonymous users result in access denied when redirected to the Drupal site for log in [#3371060]](https://www.drupal.org/project/discourse_sso/issues/3371060)
