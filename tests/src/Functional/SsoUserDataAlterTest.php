@@ -85,13 +85,6 @@ class SsoUserDataAlterTest extends BrowserTestBase {
       $entityTypeRepository->getEntityTypeFromClass(FieldStorageConfig::class)
     );
 
-  }
-
-  /**
-   * Test that our parameters alter hook works as intended.
-   */
-  public function testAlterParameters(): void {
-
     $this->fieldStorageConfigStorage->create([
       'entity_type' => 'user',
       'field_name'  => self::EARLY_SUPPORTER_DRUPAL_FIELD_NAME,
@@ -103,6 +96,13 @@ class SsoUserDataAlterTest extends BrowserTestBase {
       'bundle'      => 'user',
       'field_name'  => self::EARLY_SUPPORTER_DRUPAL_FIELD_NAME,
     ])->save();
+
+  }
+
+  /**
+   * Test that our parameters alter hook works as intended.
+   */
+  public function testAlterParameters(): void {
 
     /** @var \Drupal\user\UserInterface */
     $user = $this->drupalCreateUser([], null, false, [
