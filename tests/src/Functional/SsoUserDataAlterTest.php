@@ -167,4 +167,27 @@ class SsoUserDataAlterTest extends BrowserTestBase {
 
   }
 
+  /**
+   * Test that the Discourse field is true when user field is explicitly true.
+   */
+  public function testUserIsEarlySupporter(): void {
+
+    $this->createEarlySupporterField();
+
+    /** @var \Drupal\user\UserInterface */
+    $user = $this->drupalCreateUser([], null, false, [
+      self::EARLY_SUPPORTER_DRUPAL_FIELD_NAME => 1,
+    ]);
+
+    $parameters = ['external_id' => $user->id()];
+
+    $this->ssoUserData->alterParameters($parameters);
+
+    $this->assertEquals([
+      'external_id' => $user->id(),
+      self::EARLY_SUPPORTER_DISCOURSE_FIELD_NAME => true,
+    ], $parameters);
+
+  }
+
 }
