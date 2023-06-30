@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\omnipedia_discourse\Functional;
 
+use Drupal\Core\Config\Entity\ConfigEntityStorageInterface;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\omnipedia_discourse\Service\SsoUserDataInterface;
@@ -34,6 +35,22 @@ class SsoUserDataAlterTest extends BrowserTestBase {
   protected SsoUserDataInterface $ssoUserData;
 
   /**
+   * The Drupal field configuration entity storage.
+   *
+   * @var \Drupal\Core\Config\Entity\ConfigEntityStorageInterface
+   */
+  protected ConfigEntityStorageInterface $fieldConfigStorage;
+
+  /**
+   * The Drupal field storage configuration entity storage.
+   *
+   * Try saying that three times fast.
+   *
+   * @var \Drupal\Core\Config\Entity\ConfigEntityStorageInterface
+   */
+  protected ConfigEntityStorageInterface $fieldStorageConfigStorage;
+
+  /**
    * {@inheritdoc}
    */
   protected $defaultTheme = 'stark';
@@ -54,6 +71,20 @@ class SsoUserDataAlterTest extends BrowserTestBase {
       'omnipedia_discourse.sso_user_data'
     );
 
+    /** @var \Drupal\Core\Entity\EntityTypeManagerInterface */
+    $entityTypeManager = $this->container->get('entity_type.manager');
+
+    /** @var \Drupal\Core\Entity\EntityTypeRepositoryInterface */
+    $entityTypeRepository = $this->container->get('entity_type.repository');
+
+    $this->fieldConfigStorage = $entityTypeManager->getStorage(
+      $entityTypeRepository->getEntityTypeFromClass(FieldConfig::class)
+    );
+
+    $this->fieldStorageConfigStorage = $entityTypeManager->getStorage(
+      $entityTypeRepository->getEntityTypeFromClass(FieldStorageConfig::class)
+    );
+
   }
 
   /**
@@ -61,13 +92,13 @@ class SsoUserDataAlterTest extends BrowserTestBase {
    */
   public function testAlterParameters(): void {
 
-    FieldStorageConfig::create([
+    $this->fieldStorageConfigStorage->create([
       'entity_type' => 'user',
       'field_name'  => self::EARLY_SUPPORTER_DRUPAL_FIELD_NAME,
       'type'        => 'boolean',
     ])->save();
 
-    FieldConfig::create([
+    $this->fieldConfigStorage->create([
       'entity_type' => 'user',
       'bundle'      => 'user',
       'field_name'  => self::EARLY_SUPPORTER_DRUPAL_FIELD_NAME,
