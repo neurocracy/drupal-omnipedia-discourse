@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\omnipedia_discourse\Functional;
 
-use Drupal\Tests\BrowserTestBase;
+use Drupal\field\Entity\FieldConfig;
+use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\omnipedia_discourse\Service\SsoUserDataInterface;
+use Drupal\Tests\BrowserTestBase;
 
 /**
  * Tests for the Omnipedia Discourse SSO user data service alter hook.
@@ -39,7 +41,7 @@ class SsoUserDataAlterTest extends BrowserTestBase {
   /**
    * {@inheritdoc}
    */
-  protected static $modules = ['omnipedia_discourse'];
+  protected static $modules = ['field', 'user', 'omnipedia_discourse'];
 
   /**
    * {@inheritdoc}
@@ -67,6 +69,7 @@ class SsoUserDataAlterTest extends BrowserTestBase {
 
     FieldConfig::create([
       'entity_type' => 'user',
+      'bundle'      => 'user',
       'field_name'  => self::EARLY_SUPPORTER_DRUPAL_FIELD_NAME,
     ])->save();
 
@@ -75,9 +78,9 @@ class SsoUserDataAlterTest extends BrowserTestBase {
       self::EARLY_SUPPORTER_DRUPAL_FIELD_NAME => 1,
     ]);
 
-    $this->assertEquals(1, $user->get(
+    $this->assertEquals('1', $user->get(
       self::EARLY_SUPPORTER_DRUPAL_FIELD_NAME
-    )->get(0)->getValue(), 'whoops');
+    )->get(0)->getString(), 'whoops');
 
   }
 
