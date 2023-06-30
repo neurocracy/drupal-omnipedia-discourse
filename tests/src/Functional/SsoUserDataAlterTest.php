@@ -9,6 +9,7 @@ use Drupal\field\Entity\FieldConfig;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\omnipedia_discourse\Service\SsoUserDataInterface;
 use Drupal\Tests\BrowserTestBase;
+use Drupal\user\UserStorageInterface;
 
 /**
  * Tests for the Omnipedia Discourse SSO user data service alter hook.
@@ -51,6 +52,13 @@ class SsoUserDataAlterTest extends BrowserTestBase {
   protected ConfigEntityStorageInterface $fieldStorageConfigStorage;
 
   /**
+   * The Drupal user entity storage.
+   *
+   * @var \Drupal\user\UserStorageInterface
+   */
+  protected UserStorageInterface $userStorage;
+
+  /**
    * {@inheritdoc}
    */
   protected $defaultTheme = 'stark';
@@ -85,6 +93,8 @@ class SsoUserDataAlterTest extends BrowserTestBase {
       $entityTypeRepository->getEntityTypeFromClass(FieldStorageConfig::class)
     );
 
+    $this->userStorage = $entityTypeManager->getStorage('user');
+
   }
 
   /**
@@ -111,12 +121,19 @@ class SsoUserDataAlterTest extends BrowserTestBase {
    */
   public function testNonExistentUser(): void {
 
-    // This assumes user 99 does not exist in this test.
-    $parameters = ['external_id' => 99];
+    /** @var integer A user ID that should not exist in user entity storage. */
+    $uid = 0;
+
+    // Find the first user ID that doesn't exist.
+    while (\is_object($this->userStorage->load($uid))) {
+      $uid++;
+    }
+
+    $parameters = ['external_id' => $uid];
 
     $this->ssoUserData->alterParameters($parameters);
 
-    $this->assertEquals(['external_id' => 99], $parameters);
+    $this->assertEquals(['external_id' => $uid], $parameters);
 
   }
 
