@@ -107,18 +107,16 @@ class SsoUserDataAlterTest extends BrowserTestBase {
   }
 
   /**
-   * Test that our parameters alter hook works as intended.
+   * Tests that the $parameters array is unchanged if user entity doesn't exist.
    */
-  public function testAlterParameters(): void {
+  public function testNonExistentUser(): void {
 
-    /** @var \Drupal\user\UserInterface */
-    $user = $this->drupalCreateUser([], null, false, [
-      self::EARLY_SUPPORTER_DRUPAL_FIELD_NAME => 1,
-    ]);
+    // This assumes user 99 does not exist in this test.
+    $parameters = ['external_id' => 99];
 
-    $this->assertEquals('1', $user->get(
-      self::EARLY_SUPPORTER_DRUPAL_FIELD_NAME
-    )->get(0)->getString(), 'whoops');
+    $this->ssoUserData->alterParameters($parameters);
+
+    $this->assertEquals(['external_id' => 99], $parameters);
 
   }
 
