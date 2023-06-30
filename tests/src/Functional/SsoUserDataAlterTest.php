@@ -85,6 +85,13 @@ class SsoUserDataAlterTest extends BrowserTestBase {
       $entityTypeRepository->getEntityTypeFromClass(FieldStorageConfig::class)
     );
 
+  }
+
+  /**
+   * Create the early supporter field on the user entity.
+   */
+  protected function createEarlySupporterField(): void {
+
     $this->fieldStorageConfigStorage->create([
       'entity_type' => 'user',
       'field_name'  => self::EARLY_SUPPORTER_DRUPAL_FIELD_NAME,
