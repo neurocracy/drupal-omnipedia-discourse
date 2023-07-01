@@ -1,4 +1,4 @@
-name: Omnipedia - Discourse Content-Security-Policy
+name: Omnipedia - Discourse - Content-Security-Policy
 type: module
 description: Provides <a href="https://discourse.org/">Discourse</a> integration with the <a href="https://www.drupal.org/project/csp">Content-Security-Policy module</a> for Omnipedia.
 package: Omnipedia
