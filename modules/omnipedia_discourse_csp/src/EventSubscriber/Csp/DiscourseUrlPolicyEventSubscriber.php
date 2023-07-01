@@ -64,7 +64,7 @@ class DiscourseUrlPolicyEventSubscriber implements EventSubscriberInterface {
     /** @var \Drupal\csp\Csp */
     $policy = $alterEvent->getPolicy();
 
-    $policy->fallbackAwareAppendIfEnabled('form-action', [$url]);
+    $policy->appendDirective('form-action', [$url]);
 
   }
 
