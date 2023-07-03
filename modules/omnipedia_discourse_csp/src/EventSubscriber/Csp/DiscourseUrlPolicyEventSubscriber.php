@@ -57,7 +57,7 @@ class DiscourseUrlPolicyEventSubscriber implements EventSubscriberInterface {
       'discourse_sso.settings'
     )->get('discourse_server');
 
-    if ($url === null) {
+    if (empty($url)) {
       return;
     }
 
