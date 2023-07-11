@@ -1,0 +1,7 @@
+omnipedia_discourse.settings:
+  type: config_object
+  label: 'Omnipedia - Discourse settings'
+  mapping:
+    menu_link_text:
+      type: label
+      label: 'Discourse server menu link text'

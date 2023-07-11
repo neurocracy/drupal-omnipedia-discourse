@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Drupal\omnipedia_discourse\Plugin\Deriver;
 
 use Drupal\Component\Plugin\Derivative\DeriverBase;
-use Drupal\Core\Menu\Form\MenuLinkDefaultForm;
+use Drupal\omnipedia_discourse\Form\DiscourseMenuLinkForm;
 use Drupal\omnipedia_discourse\Plugin\Menu\DiscourseMenuLink;
 
 /**
@@ -26,7 +26,7 @@ class DiscourseMenuLinkDeriver extends DeriverBase {
     return [
       [
         'class'       => DiscourseMenuLink::class,
-        'form_class'  => MenuLinkDefaultForm::class,
+        'form_class'  => DiscourseMenuLinkForm::class,
         'provider'    => 'omnipedia_discourse',
         'menu_name'   => 'main',
         'weight'      => 0,

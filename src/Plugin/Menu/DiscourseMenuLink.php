@@ -8,8 +8,6 @@ use Drupal\Core\Cache\Cache;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Menu\MenuLinkDefault;
 use Drupal\Core\Menu\StaticMenuLinkOverridesInterface;
-use Drupal\Core\StringTranslation\StringTranslationTrait;
-use Drupal\Core\StringTranslation\TranslationInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -17,18 +15,18 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *
  * @todo Don't output if the user doesn't have the 'access discourse sso'
  *   permission.
- *
- * @todo Configurable link title via simple config (since we only always have
- *   one menu item).
  */
 class DiscourseMenuLink extends MenuLinkDefault {
-
-  use StringTranslationTrait;
 
   /**
    * The Discourse SSO module configuration name.
    */
   protected const DISCOURSE_SSO_CONFIG_NAME = 'discourse_sso.settings';
+
+  /**
+   * Our menu link configuration name.
+   */
+  protected const MENU_LINK_CONFIG_NAME = 'omnipedia_discourse.settings';
 
   /**
    * {@inheritdoc}
@@ -61,15 +59,11 @@ class DiscourseMenuLink extends MenuLinkDefault {
    *
    * @param \Drupal\Core\Menu\StaticMenuLinkOverridesInterface $staticOverride
    *   The Drupal static override storage.
-   *
-   * @param \Drupal\Core\StringTranslation\TranslationInterface $stringTranslation
-   *   The Drupal string translation service.
    */
   public function __construct(
     array $configuration, $pluginId, $pluginDefinition,
     protected readonly ConfigFactoryInterface $configFactory,
     StaticMenuLinkOverridesInterface $staticOverride,
-    protected $stringTranslation,
   ) {
 
     /** @var string|null */
@@ -82,7 +76,9 @@ class DiscourseMenuLink extends MenuLinkDefault {
       $pluginDefinition['url'] = $url;
     }
 
-    $pluginDefinition['title'] = $this->t('Discourse server');
+    $pluginDefinition['title'] = $this->configFactory->get(
+      self::MENU_LINK_CONFIG_NAME
+    )->get('menu_link_text');
 
     parent::__construct(
       $configuration,
@@ -105,7 +101,6 @@ class DiscourseMenuLink extends MenuLinkDefault {
       $configuration, $pluginId, $pluginDefinition,
       $container->get('config.factory'),
       $container->get('menu_link.static.overrides'),
-      $container->get('string_translation'),
     );
 
   }
@@ -130,6 +125,7 @@ class DiscourseMenuLink extends MenuLinkDefault {
       parent::getCacheTags(),
       [
         'config:' . self::DISCOURSE_SSO_CONFIG_NAME,
+        'config:' . self::MENU_LINK_CONFIG_NAME,
       ],
     );
 
