@@ -1,0 +1,4 @@
+omnipedia_discourse.server:
+  class: Drupal\omnipedia_discourse\Plugin\Menu\DiscourseMenuLink
+  form_class: Drupal\Core\Menu\Form\MenuLinkDefaultForm
+  deriver: Drupal\omnipedia_discourse\Plugin\Deriver\DiscourseMenuLinkDeriver
