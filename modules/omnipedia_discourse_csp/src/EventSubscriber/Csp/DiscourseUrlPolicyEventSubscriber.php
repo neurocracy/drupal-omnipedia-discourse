@@ -15,21 +15,14 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 class DiscourseUrlPolicyEventSubscriber implements EventSubscriberInterface {
 
   /**
-   * The Drupal configuration object factory service.
-   *
-   * @var \Drupal\Core\Config\ConfigFactoryInterface
-   */
-  protected ConfigFactoryInterface $configFactory;
-
-  /**
    * Event subscriber constructor; saves dependencies.
    *
    * @param \Drupal\Core\Config\ConfigFactoryInterface $configFactory
    *   The Drupal configuration object factory service.
    */
-  public function __construct(ConfigFactoryInterface $configFactory) {
-    $this->configFactory = $configFactory;
-  }
+  public function __construct(
+    protected readonly ConfigFactoryInterface $configFactory,
+  ) {}
 
   /**
    * {@inheritdoc}
