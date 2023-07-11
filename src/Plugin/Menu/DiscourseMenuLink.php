@@ -37,9 +37,6 @@ class DiscourseMenuLink extends MenuLinkDefault {
     'weight'      => 1,
     'expanded'    => 1,
     'enabled'     => 1,
-    'title'       => 1,
-    'description' => 1,
-    'options'     => 1,
   ];
 
   /**
