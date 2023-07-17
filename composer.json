@@ -18,7 +18,8 @@
     "php": "^8",
     "cweagans/composer-patches": "^1.7",
     "drupal/core": "^9.5 || ^10.0",
-    "drupal/discourse_sso": "^2.0@RC"
+    "drupal/discourse_sso": "^2.0@RC",
+    "drupal/omnipedia_core": "4.x-dev@dev"
   },
   "extra": {
     "patches": {

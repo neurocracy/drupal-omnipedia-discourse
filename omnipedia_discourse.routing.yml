@@ -1,0 +1,7 @@
+entity.node.omnipedia_talk:
+  path: '/node/{node}/talk'
+  defaults:
+    _controller: 'Drupal\omnipedia_discourse\Controller\WikiNodeTalkLocalTaskController::view'
+  requirements:
+    node: \d+
+    _custom_access: 'Drupal\omnipedia_discourse\Controller\WikiNodeTalkLocalTaskController::access'

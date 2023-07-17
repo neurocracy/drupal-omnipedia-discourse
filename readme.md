@@ -24,6 +24,13 @@ part of this codebase is useful or will inspire someone out there.
 
 * [Composer](https://getcomposer.org/)
 
+## Drupal dependencies
+
+Before attempting to install this, you must add the Composer repositories as
+described in the installation instructions for these dependencies:
+
+* The [`omnipedia_core` module](https://github.com/neurocracy/drupal-omnipedia-core).
+
 ----
 
 # Installation

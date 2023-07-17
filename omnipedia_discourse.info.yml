@@ -8,3 +8,4 @@ php: 8.0
 dependencies:
   - discourse_sso:discourse_sso
   - drupal:user
+  - omnipedia_core:omnipedia_core

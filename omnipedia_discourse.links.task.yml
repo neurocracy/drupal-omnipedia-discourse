@@ -1,0 +1,4 @@
+entity.node.omnipedia_talk:
+  route_name: entity.node.omnipedia_talk
+  base_route: entity.node.canonical
+  title:      'Talk'
