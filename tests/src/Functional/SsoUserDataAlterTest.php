@@ -14,6 +14,8 @@ use Drupal\user\UserStorageInterface;
 /**
  * Tests for the Omnipedia Discourse SSO user data service alter hook.
  *
+ * @group omnipedia
+ *
  * @group omnipedia_discourse
  */
 class SsoUserDataAlterTest extends BrowserTestBase {
