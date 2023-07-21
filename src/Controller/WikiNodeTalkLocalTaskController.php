@@ -41,14 +41,14 @@ class WikiNodeTalkLocalTaskController implements ContainerInjectionInterface {
    *
    * @var \Drupal\Core\Config\ImmutableConfig
    */
-  protected ImmutableConfig $discourseSsoConfig;
+  protected readonly ImmutableConfig $discourseSsoConfig;
 
   /**
    * The Discourse server URL, if configured.
    *
    * @var string
    */
-  protected string $discourseServerUrl;
+  protected readonly string $discourseServerUrl;
 
   /**
    * Constructs this controller; saves dependencies.
