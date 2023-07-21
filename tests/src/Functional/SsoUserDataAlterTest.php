@@ -35,14 +35,14 @@ class SsoUserDataAlterTest extends BrowserTestBase {
    *
    * @var \Drupal\omnipedia_discourse\Service\SsoUserDataInterface
    */
-  protected SsoUserDataInterface $ssoUserData;
+  protected readonly SsoUserDataInterface $ssoUserData;
 
   /**
    * The Drupal field configuration entity storage.
    *
    * @var \Drupal\Core\Config\Entity\ConfigEntityStorageInterface
    */
-  protected ConfigEntityStorageInterface $fieldConfigStorage;
+  protected readonly ConfigEntityStorageInterface $fieldConfigStorage;
 
   /**
    * The Drupal field storage configuration entity storage.
@@ -51,14 +51,14 @@ class SsoUserDataAlterTest extends BrowserTestBase {
    *
    * @var \Drupal\Core\Config\Entity\ConfigEntityStorageInterface
    */
-  protected ConfigEntityStorageInterface $fieldStorageConfigStorage;
+  protected readonly ConfigEntityStorageInterface $fieldStorageConfigStorage;
 
   /**
    * The Drupal user entity storage.
    *
    * @var \Drupal\user\UserStorageInterface
    */
-  protected UserStorageInterface $userStorage;
+  protected readonly UserStorageInterface $userStorage;
 
   /**
    * {@inheritdoc}
