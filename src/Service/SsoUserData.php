@@ -29,7 +29,7 @@ class SsoUserData implements SsoUserDataInterface {
    *   The Drupal entity type manager.
    */
   public function __construct(
-    protected readonly EntityTypeManagerInterface $entityTypeManager
+    protected readonly EntityTypeManagerInterface $entityTypeManager,
   ) {}
 
   /**
