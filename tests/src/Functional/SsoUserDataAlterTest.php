@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\omnipedia_discourse\Functional;
 
-use Drupal\Core\Config\Entity\ConfigEntityStorageInterface;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Entity\EntityTypeRepositoryInterface;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\omnipedia_discourse\Service\SsoUserDataInterface;
@@ -38,27 +39,18 @@ class SsoUserDataAlterTest extends BrowserTestBase {
   protected readonly SsoUserDataInterface $ssoUserData;
 
   /**
-   * The Drupal field configuration entity storage.
+   * The Drupal entity type manager.
    *
-   * @var \Drupal\Core\Config\Entity\ConfigEntityStorageInterface
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
-  protected readonly ConfigEntityStorageInterface $fieldConfigStorage;
+  protected readonly EntityTypeManagerInterface $entityTypeManager;
 
   /**
-   * The Drupal field storage configuration entity storage.
+   * The Drupakl entity type repository.
    *
-   * Try saying that three times fast.
-   *
-   * @var \Drupal\Core\Config\Entity\ConfigEntityStorageInterface
+   * @var \Drupal\Core\Entity\EntityTypeRepositoryInterface
    */
-  protected readonly ConfigEntityStorageInterface $fieldStorageConfigStorage;
-
-  /**
-   * The Drupal user entity storage.
-   *
-   * @var \Drupal\user\UserStorageInterface
-   */
-  protected readonly UserStorageInterface $userStorage;
+  protected readonly EntityTypeRepositoryInterface $entityTypeRepository;
 
   /**
    * {@inheritdoc}
@@ -81,21 +73,11 @@ class SsoUserDataAlterTest extends BrowserTestBase {
       'omnipedia_discourse.sso_user_data'
     );
 
-    /** @var \Drupal\Core\Entity\EntityTypeManagerInterface */
-    $entityTypeManager = $this->container->get('entity_type.manager');
+    $this->entityTypeManager = $this->container->get('entity_type.manager');
 
-    /** @var \Drupal\Core\Entity\EntityTypeRepositoryInterface */
-    $entityTypeRepository = $this->container->get('entity_type.repository');
-
-    $this->fieldConfigStorage = $entityTypeManager->getStorage(
-      $entityTypeRepository->getEntityTypeFromClass(FieldConfig::class)
+    $this->entityTypeRepository = $this->container->get(
+      'entity_type.repository'
     );
-
-    $this->fieldStorageConfigStorage = $entityTypeManager->getStorage(
-      $entityTypeRepository->getEntityTypeFromClass(FieldStorageConfig::class)
-    );
-
-    $this->userStorage = $entityTypeManager->getStorage('user');
 
   }
 
@@ -104,13 +86,25 @@ class SsoUserDataAlterTest extends BrowserTestBase {
    */
   protected function createEarlySupporterField(): void {
 
-    $this->fieldStorageConfigStorage->create([
+    /** @var \Drupal\Core\Config\Entity\ConfigEntityStorageInterface The Drupal field configuration entity storage. */
+    $fieldConfigStorage = $this->entityTypeManager->getStorage(
+      $this->entityTypeRepository->getEntityTypeFromClass(FieldConfig::class),
+    );
+
+    /** @var \Drupal\Core\Config\Entity\ConfigEntityStorageInterface The Drupal field storage configuration entity storage. Try saying that three times fast. */
+    $fieldStorageConfigStorage = $this->entityTypeManager->getStorage(
+      $this->entityTypeRepository->getEntityTypeFromClass(
+        FieldStorageConfig::class,
+      ),
+    );
+
+    $fieldStorageConfigStorage->create([
       'entity_type' => 'user',
       'field_name'  => self::EARLY_SUPPORTER_DRUPAL_FIELD_NAME,
       'type'        => 'boolean',
     ])->save();
 
-    $this->fieldConfigStorage->create([
+    $fieldConfigStorage->create([
       'entity_type' => 'user',
       'bundle'      => 'user',
       'field_name'  => self::EARLY_SUPPORTER_DRUPAL_FIELD_NAME,
@@ -123,11 +117,14 @@ class SsoUserDataAlterTest extends BrowserTestBase {
    */
   public function testNonExistentUser(): void {
 
+    /** @var \Drupal\user\UserStorageInterface The Drupal user entity storage. */
+    $userStorage = $this->entityTypeManager->getStorage('user');
+
     /** @var integer A user ID that should not exist in user entity storage. */
     $uid = 0;
 
     // Find the first user ID that doesn't exist.
-    while (\is_object($this->userStorage->load($uid))) {
+    while (\is_object($userStorage->load($uid))) {
       $uid++;
     }
 

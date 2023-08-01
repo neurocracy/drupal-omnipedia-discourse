@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Drupal\omnipedia_discourse\Service;
 
 use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\user\UserStorageInterface;
 use Drupal\omnipedia_discourse\Service\SsoUserDataInterface;
 
 /**
@@ -24,21 +23,14 @@ class SsoUserData implements SsoUserDataInterface {
   protected const EARLY_SUPPORTER_DISCOURSE_FIELD_NAME = 'custom.user_field_1';
 
   /**
-   * The Drupal user entity storage.
-   *
-   * @var \Drupal\user\UserStorageInterface
-   */
-  protected UserStorageInterface $userStorage;
-
-  /**
    * Constructs this service object; saves dependencies.
    *
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
    *   The Drupal entity type manager.
    */
-  public function __construct(EntityTypeManagerInterface  $entityTypeManager) {
-    $this->userStorage = $entityTypeManager->getStorage('user');
-  }
+  public function __construct(
+    protected readonly EntityTypeManagerInterface $entityTypeManager
+  ) {}
 
   /**
    * {@inheritdoc}
@@ -46,7 +38,9 @@ class SsoUserData implements SsoUserDataInterface {
   public function alterParameters(array &$parameters): void {
 
     /** @var \Drupal\user\UserInterface|null */
-    $user = $this->userStorage->load($parameters['external_id']);
+    $user = $this->entityTypeManager->getStorage('user')->load(
+      $parameters['external_id'],
+    );
 
     if (!\is_object($user)) {
       return;
