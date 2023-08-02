@@ -2,14 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Drupal\Tests\omnipedia_discourse\Functional;
+namespace Drupal\Tests\omnipedia_discourse\Kernel;
 
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Entity\EntityTypeRepositoryInterface;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\field\Entity\FieldStorageConfig;
+use Drupal\KernelTests\KernelTestBase;
 use Drupal\omnipedia_discourse\Service\SsoUserDataInterface;
-use Drupal\Tests\BrowserTestBase;
+use Drupal\Tests\user\Traits\UserCreationTrait;
 use Drupal\user\UserStorageInterface;
 
 /**
@@ -19,7 +20,13 @@ use Drupal\user\UserStorageInterface;
  *
  * @group omnipedia_discourse
  */
-class SsoUserDataAlterTest extends BrowserTestBase {
+class SsoUserDataAlterTest extends KernelTestBase {
+
+  use UserCreationTrait {
+    createUser      as drupalCreateUser;
+    createRole      as drupalCreateRole;
+    createAdminRole as drupalCreateAdminRole;
+  }
 
   /**
    * The name of the Drupal user entity field indicating an early supporter.
@@ -55,11 +62,6 @@ class SsoUserDataAlterTest extends BrowserTestBase {
   /**
    * {@inheritdoc}
    */
-  protected $defaultTheme = 'stark';
-
-  /**
-   * {@inheritdoc}
-   */
   protected static $modules = ['field', 'user', 'omnipedia_discourse'];
 
   /**
@@ -68,6 +70,8 @@ class SsoUserDataAlterTest extends BrowserTestBase {
   protected function setUp(): void {
 
     parent::setUp();
+
+    $this->installEntitySchema('user');
 
     $this->ssoUserData = $this->container->get(
       'omnipedia_discourse.sso_user_data'
