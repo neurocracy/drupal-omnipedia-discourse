@@ -89,7 +89,6 @@ class WikiNodeTalkLocalTaskController implements ContainerInjectionInterface {
     );
   }
 
-
   /**
    * Checks access for the request.
    *
