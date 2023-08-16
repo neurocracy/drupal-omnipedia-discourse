@@ -7,7 +7,6 @@ namespace Drupal\omnipedia_discourse\Controller;
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Access\AccessResultInterface;
 use Drupal\Core\Config\ConfigFactoryInterface;
-use Drupal\Core\Config\ImmutableConfig;
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 use Drupal\Core\Routing\TrustedRedirectResponse;
 use Drupal\Core\Session\AccountInterface;
@@ -37,13 +36,6 @@ class WikiNodeTalkLocalTaskController implements ContainerInjectionInterface {
   protected const EPISODE_TERM_DISCOURSE_FIELD = 'field_discourse_permalink';
 
   /**
-   * The Discourse SSO module configuration.
-   *
-   * @var \Drupal\Core\Config\ImmutableConfig
-   */
-  protected readonly ImmutableConfig $discourseSsoConfig;
-
-  /**
    * The Discourse server URL, if configured.
    *
    * @var string
@@ -62,22 +54,7 @@ class WikiNodeTalkLocalTaskController implements ContainerInjectionInterface {
   public function __construct(
     protected readonly ConfigFactoryInterface $configFactory,
     protected readonly AccountProxyInterface  $currentUser,
-  ) {
-
-    $this->discourseSsoConfig = $this->configFactory->get(
-      self::DISCOURSE_SSO_CONFIG_NAME
-    );
-
-    /** @var string|null */
-    $url = $this->discourseSsoConfig->get('discourse_server');
-
-    if (!empty($url)) {
-      $this->discourseServerUrl = $url;
-    } else {
-      $this->discourseServerUrl = '';
-    }
-
-  }
+  ) {}
 
   /**
    * {@inheritdoc}
@@ -87,6 +64,35 @@ class WikiNodeTalkLocalTaskController implements ContainerInjectionInterface {
       $container->get('config.factory'),
       $container->get('current_user'),
     );
+  }
+
+  /**
+   * Get the configured Discourse server URL.
+   *
+   * @return string
+   */
+  protected function getServerUrl(): string {
+
+    if (isset($this->discourseServerUrl)) {
+      return $this->discourseServerUrl;
+    }
+
+    /** @var \Drupal\Core\Config\ImmutableConfig The Discourse SSO module configuration. */
+    $config = $this->configFactory->get(
+      self::DISCOURSE_SSO_CONFIG_NAME
+    );
+
+    /** @var string|null */
+    $url = $config->get('discourse_server');
+
+    if (!empty($url)) {
+      $this->discourseServerUrl = $url;
+    } else {
+      $this->discourseServerUrl = '';
+    }
+
+    return $this->discourseServerUrl;
+
   }
 
   /**
@@ -108,10 +114,11 @@ class WikiNodeTalkLocalTaskController implements ContainerInjectionInterface {
       $node->isWikiNode() &&
       !$node->isMainPage() &&
       $node->access('view', $account) &&
-      !empty($this->discourseServerUrl)
+      !empty($this->getServerUrl())
     )
-    ->addCacheableDependency($this->discourseSsoConfig)
-    ->addCacheableDependency($node);
+    ->addCacheableDependency($this->configFactory->get(
+      self::DISCOURSE_SSO_CONFIG_NAME
+    ))->addCacheableDependency($node);
 
   }
 
@@ -128,7 +135,7 @@ class WikiNodeTalkLocalTaskController implements ContainerInjectionInterface {
    */
   protected function getRedirectUrl(NodeInterface $node): string {
 
-    $fallbackUrl = $this->discourseServerUrl;
+    $fallbackUrl = $this->getServerUrl();
 
     if (
       $node->hasField(self::WIKI_NODE_EPISODE_FIELD) === false ||
@@ -149,7 +156,7 @@ class WikiNodeTalkLocalTaskController implements ContainerInjectionInterface {
     }
 
     /** @var \Drupal\Core\Url */
-    $urlObject = Url::fromUri($this->discourseServerUrl . '/' . $permalink);
+    $urlObject = Url::fromUri($this->getServerUrl() . '/' . $permalink);
 
     return $urlObject->toString();
 
