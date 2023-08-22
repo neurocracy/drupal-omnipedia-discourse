@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Drupal\omnipedia_discourse\Service;
 
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\hux\Attribute\Alter;
 use Drupal\omnipedia_discourse\Service\SsoUserDataInterface;
 
 /**
@@ -32,6 +33,7 @@ class SsoUserData implements SsoUserDataInterface {
     protected readonly EntityTypeManagerInterface $entityTypeManager,
   ) {}
 
+  #[Alter('discourse_sso_parameters')]
   /**
    * {@inheritdoc}
    */

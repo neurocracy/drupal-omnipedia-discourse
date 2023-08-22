@@ -19,6 +19,7 @@
     "cweagans/composer-patches": "^1.7",
     "drupal/core": "^9.5 || ^10.0",
     "drupal/discourse_sso": "^2.0@RC",
+    "drupal/hux": "^1.1",
     "drupal/omnipedia_core": "4.x-dev@dev || 5.x-dev@dev"
   },
   "extra": {

@@ -4,6 +4,8 @@ services:
     class: Drupal\omnipedia_discourse\Service\SsoUserData
     arguments:
       - '@entity_type.manager'
+    tags:
+      - { name: hooks }
 
   omnipedia_discourse.sso_maintenance_mode_routing_event_subscriber:
     class: Drupal\omnipedia_discourse\EventSubscriber\Routing\SsoMaintenanceModeRoutingEventSubscriber
