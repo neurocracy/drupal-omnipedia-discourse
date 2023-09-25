@@ -21,6 +21,8 @@ described in the installation instructions for these dependencies:
 
 * The [`omnipedia_core` module](https://github.com/neurocracy/drupal-omnipedia-core).
 
+* The [`omnipedia_main_page` module](https://github.com/neurocracy/drupal-omnipedia-main-page).
+
 ----
 
 # Installation

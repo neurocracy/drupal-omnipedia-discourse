@@ -13,8 +13,8 @@ use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\Core\Url;
 use Drupal\omnipedia_core\Entity\NodeInterface;
-use Drupal\omnipedia_core\Service\WikiNodeMainPageInterface;
 use Drupal\omnipedia_core\Service\WikiNodeResolverInterface;
+use Drupal\omnipedia_main_page\Service\MainPageResolverInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -53,8 +53,8 @@ class WikiNodeTalkLocalTaskController implements ContainerInjectionInterface {
    * @param \Drupal\Core\Session\AccountProxyInterface $currentUser
    *   The current user proxy service.
    *
-   * @param \Drupal\omnipedia_core\Service\WikiNodeMainPageInterface $wikiNodeMainPage
-   *   The Omnipedia wiki node main page service.
+   * @param \Drupal\omnipedia_main_page\Service\MainPageResolverInterface $mainPageResolver
+   *   The Omnipedia main page resolver service.
    *
    * @param \Drupal\omnipedia_core\Service\WikiNodeResolverInterface $wikiNodeResolver
    *   The Omnipedia wiki node resolver service.
@@ -62,7 +62,7 @@ class WikiNodeTalkLocalTaskController implements ContainerInjectionInterface {
   public function __construct(
     protected readonly ConfigFactoryInterface     $configFactory,
     protected readonly AccountProxyInterface      $currentUser,
-    protected readonly WikiNodeMainPageInterface  $wikiNodeMainPage,
+    protected readonly MainPageResolverInterface  $mainPageResolver,
     protected readonly WikiNodeResolverInterface  $wikiNodeResolver,
   ) {}
 
@@ -73,7 +73,7 @@ class WikiNodeTalkLocalTaskController implements ContainerInjectionInterface {
     return new static(
       $container->get('config.factory'),
       $container->get('current_user'),
-      $container->get('omnipedia.wiki_node_main_page'),
+      $container->get('omnipedia_main_page.resolver'),
       $container->get('omnipedia.wiki_node_resolver'),
     );
   }
@@ -124,7 +124,7 @@ class WikiNodeTalkLocalTaskController implements ContainerInjectionInterface {
 
     return AccessResult::allowedIf(
       $this->wikiNodeResolver->isWikiNode($node) &&
-      !$this->wikiNodeMainPage->isMainPage($node) &&
+      !$this->mainPageResolver->is($node) &&
       $node->access('view', $account) &&
       !empty($this->getServerUrl())
     )
