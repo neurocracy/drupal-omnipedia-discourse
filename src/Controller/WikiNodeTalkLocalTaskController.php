@@ -12,7 +12,7 @@ use Drupal\Core\Routing\TrustedRedirectResponse;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\Core\Url;
-use Drupal\omnipedia_core\Entity\NodeInterface;
+use Drupal\node\NodeInterface;
 use Drupal\omnipedia_core\Service\WikiNodeResolverInterface;
 use Drupal\omnipedia_main_page\Service\MainPageResolverInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -137,7 +137,7 @@ class WikiNodeTalkLocalTaskController implements ContainerInjectionInterface {
   /**
    * Get the Discourse URL to redirect to.
    *
-   * @param \Drupal\omnipedia_core\Entity\NodeInterface $node
+   * @param \Drupal\node\NodeInterface $node
    *   A node object.
    *
    * @return string
@@ -177,7 +177,7 @@ class WikiNodeTalkLocalTaskController implements ContainerInjectionInterface {
   /**
    * Callback for the talk route.
    *
-   * @param \Drupal\omnipedia_core\Entity\NodeInterface $node
+   * @param \Drupal\node\NodeInterface $node
    *   A node object.
    *
    * @return \Drupal\Core\Routing\TrustedRedirectResponse
