@@ -20,8 +20,8 @@
     "drupal/core": "^9.5 || ^10.0",
     "drupal/discourse_sso": "^2.0@RC",
     "drupal/hux": "^1.1",
-    "drupal/omnipedia_core": "4.x-dev@dev || 5.x-dev@dev || 6.x-dev@dev",
-    "drupal/omnipedia_main_page": "1.x-dev@dev"
+    "drupal/omnipedia_core": "^4.0@dev || ^5.0@dev || ^6.0@dev",
+    "drupal/omnipedia_main_page": "^1.0@dev"
   },
   "extra": {
     "patches": {
