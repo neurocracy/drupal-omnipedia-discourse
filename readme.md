@@ -50,7 +50,6 @@ In your root `composer.json`, add the following to the `"repositories"` section:
 }
 ```
 
-
 ### Patching
 
 This provides [one or more patches](#patches). These can be applied automatically by the the
@@ -60,7 +59,6 @@ Notably, you'll need to [enable patching from
 dependencies](https://github.com/cweagans/composer-patches/tree/1.x#allowing-patches-to-be-applied-from-dependencies) (such as this module 🤓). At
 a minimum, you should have these values in your root `composer.json` (merge with
 existing keys as needed):
-
 
 ```json
 {
