@@ -1,0 +1,12 @@
+<?php
+
+declare(strict_types=1);
+
+/**
+ * Rebuild container for CSP module 2.0 event subscriber priority change.
+ */
+function omnipedia_discourse_csp_update_10101(): void {
+
+  \Drupal::service('kernel')->invalidateContainer();
+
+}
