@@ -19,9 +19,9 @@ for [Omnipedia](https://omnipedia.app/).
 Before attempting to install this, you must add the Composer repositories as
 described in the installation instructions for these dependencies:
 
-* The [`omnipedia_core` module](https://github.com/neurocracy/drupal-omnipedia-core).
+* The [`omnipedia_core` module](https://gitlab.com/neurocracy/omnipedia/modules/omnipedia-core).
 
-* The [`omnipedia_main_page` module](https://github.com/neurocracy/drupal-omnipedia-main-page).
+* The [`omnipedia_main_page` module](https://gitlab.com/neurocracy/omnipedia/modules/omnipedia-main-page).
 
 ----
 
@@ -44,9 +44,10 @@ should get you up and running.
 In your root `composer.json`, add the following to the `"repositories"` section:
 
 ```json
-"drupal/omnipedia_discourse": {
+{
   "type": "vcs",
-  "url": "https://github.com/neurocracy/drupal-omnipedia-discourse.git"
+  "url": "https://gitlab.com/neurocracy/omnipedia/modules/omnipedia-discourse.git",
+  "only": ["drupal/omnipedia_discourse"]
 }
 ```
 

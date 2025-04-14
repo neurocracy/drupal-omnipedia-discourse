@@ -4,8 +4,8 @@
   "type": "drupal-custom-module",
   "license": "GPL-2.0-or-later",
   "support": {
-    "docs": "https://github.com/neurocracy/drupal-omnipedia-discourse",
-    "source": "https://github.com/neurocracy/drupal-omnipedia-discourse"
+    "docs": "https://gitlab.com/neurocracy/omnipedia/modules/omnipedia-discourse",
+    "source": "https://gitlab.com/neurocracy/omnipedia/modules/omnipedia-discourse"
   },
   "authors": [
     {
