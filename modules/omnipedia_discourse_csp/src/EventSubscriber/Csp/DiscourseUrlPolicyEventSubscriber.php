@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\omnipedia_discourse_csp\EventSubscriber\Csp;
 
-use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\omnipedia_discourse\Service\DiscourseConfigInterface;
 use Drupal\csp\CspEvents;
 use Drupal\csp\Event\PolicyAlterEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -17,11 +17,11 @@ class DiscourseUrlPolicyEventSubscriber implements EventSubscriberInterface {
   /**
    * Event subscriber constructor; saves dependencies.
    *
-   * @param \Drupal\Core\Config\ConfigFactoryInterface $configFactory
-   *   The Drupal configuration object factory service.
+   * @param \Drupal\omnipedia_discourse\Service\DiscourseConfigInterface $discourseConfig
+   *   The Discourse configuration service.
    */
   public function __construct(
-    protected readonly ConfigFactoryInterface $configFactory,
+    protected readonly DiscourseConfigInterface $discourseConfig,
   ) {}
 
   /**
@@ -35,7 +35,7 @@ class DiscourseUrlPolicyEventSubscriber implements EventSubscriberInterface {
   }
 
   /**
-   * Automagically add the Discourse server URL to the form-action directive.
+   * Automagically add the Discourse server URL to CSP directives.
    *
    * Chrome will refuse to redirect to the external URL if the Discourse server
    * domain isn't present in the 'form-action' directive, while Firefox doesn't
@@ -47,9 +47,7 @@ class DiscourseUrlPolicyEventSubscriber implements EventSubscriberInterface {
   public function onCspPolicyAlter(PolicyAlterEvent $alterEvent): void {
 
     /** @var string|null */
-    $url = $this->configFactory->get(
-      'discourse_sso.settings'
-    )->get('discourse_server');
+    $url = $this->discourseConfig->getServerUrl();
 
     if (empty($url)) {
       return;
@@ -59,6 +57,10 @@ class DiscourseUrlPolicyEventSubscriber implements EventSubscriberInterface {
     $policy = $alterEvent->getPolicy();
 
     $policy->appendDirective('form-action', [$url]);
+
+    // RefreshLess/Turbo needs to be able to send a fetch request to figure out
+    // that it should do a full page load.
+    $policy->appendDirective('connect-src', [$url]);
 
   }
 
