@@ -1,9 +1,11 @@
 services:
 
+  _defaults:
+    autowire: true
+    autoconfigure: true
+
   omnipedia_discourse.sso_user_data:
     class: Drupal\omnipedia_discourse\Service\SsoUserData
-    arguments:
-      - '@entity_type.manager'
     tags:
       - { name: hooks }
 
