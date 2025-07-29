@@ -21,3 +21,14 @@ function omnipedia_discourse_update_101002(): void {
   ]);
 
 }
+
+/**
+ * Rebuild container and router for Talk local task Discourse direct links.
+ */
+function omnipedia_discourse_update_101003(): void {
+
+  \Drupal::service('kernel')->invalidateContainer();
+
+  \Drupal::service('router.builder')->rebuild();
+
+}
