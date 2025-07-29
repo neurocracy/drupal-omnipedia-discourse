@@ -8,6 +8,8 @@ use Drupal\Core\Cache\Cache;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Menu\MenuLinkDefault;
 use Drupal\Core\Menu\StaticMenuLinkOverridesInterface;
+use Drupal\omnipedia_discourse\Service\DiscourseConfigInterface;
+use Drupal\omnipedia_discourse\Service\DiscoursePermalinkResolverInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -17,11 +19,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   permission.
  */
 class DiscourseMenuLink extends MenuLinkDefault {
-
-  /**
-   * The Discourse SSO module configuration name.
-   */
-  protected const DISCOURSE_SSO_CONFIG_NAME = 'discourse_sso.settings';
 
   /**
    * Our menu link configuration name.
@@ -54,28 +51,22 @@ class DiscourseMenuLink extends MenuLinkDefault {
    * @param \Drupal\Core\Config\ConfigFactoryInterface $configFactory
    *   The Drupal configuration object factory service.
    *
+   * @param \Drupal\omnipedia_discourse\Service\DiscourseConfigInterface $discourseConfig
+   *   The Discourse configuration service.
+   *
+   * @param \Drupal\omnipedia_discourse\Service\DiscoursePermalinkResolverInterface $discoursePermalinkResolver
+   *   The Discourse permalink resolver service.
+   *
    * @param \Drupal\Core\Menu\StaticMenuLinkOverridesInterface $staticOverride
    *   The Drupal static override storage.
    */
   public function __construct(
     array $configuration, $pluginId, $pluginDefinition,
     protected readonly ConfigFactoryInterface $configFactory,
+    protected readonly DiscourseConfigInterface $discourseConfig,
+    protected readonly DiscoursePermalinkResolverInterface $discoursePermalinkResolver,
     StaticMenuLinkOverridesInterface $staticOverride,
   ) {
-
-    /** @var string|null */
-    $url = $this->configFactory->get(
-      self::DISCOURSE_SSO_CONFIG_NAME
-    )->get('discourse_server');
-
-    // If the Discourse server URL is set, this instructs
-    if (!empty($url)) {
-      $pluginDefinition['url'] = $url;
-    }
-
-    $pluginDefinition['title'] = $this->configFactory->get(
-      self::MENU_LINK_CONFIG_NAME
-    )->get('menu_link_text');
 
     parent::__construct(
       $configuration,
@@ -97,6 +88,8 @@ class DiscourseMenuLink extends MenuLinkDefault {
     return new static(
       $configuration, $pluginId, $pluginDefinition,
       $container->get('config.factory'),
+      $container->get(DiscourseConfigInterface::class),
+      $container->get(DiscoursePermalinkResolverInterface::class),
       $container->get('menu_link.static.overrides'),
     );
 
@@ -105,9 +98,51 @@ class DiscourseMenuLink extends MenuLinkDefault {
   /**
    * {@inheritdoc}
    */
+  public function getUrlObject($title_attribute = true) {
+
+    try {
+
+      $url = $this->discoursePermalinkResolver->fromDate();
+
+    // If there's any error thrown by the above, fall back to using the server
+    // URL without a permalink.
+    } catch (\Error|\Exception $exception) {
+
+      $this->pluginDefinition['url'] = $this->discourseConfig->getServerUrl();
+
+      return parent::getUrlObject($title_attribute);
+
+    }
+
+    $options = $this->getOptions() + $url->getOptions();
+
+    if ($title_attribute && $description = $this->getDescription()) {
+      $options['attributes']['title'] = $description;
+    }
+
+    $url->setOptions($options);
+
+    return $url;
+
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getTitle() {
+    return (string) $this->configFactory->get(
+      self::MENU_LINK_CONFIG_NAME,
+    )->get('menu_link_text');
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function getCacheContexts() {
 
     return Cache::mergeContexts(parent::getCacheContexts(), [
+      // The permalink varies by date.
+      'omnipedia_dates',
       'user.permissions',
     ]);
 
@@ -115,15 +150,16 @@ class DiscourseMenuLink extends MenuLinkDefault {
 
   /**
    * {@inheritdoc}
+   *
+   * @todo Also get cache tags from the permalink resolver, including the date
+   *   this is cached for, etc.
    */
   public function getCacheTags() {
 
     return Cache::mergeTags(
       parent::getCacheTags(),
-      [
-        'config:' . self::DISCOURSE_SSO_CONFIG_NAME,
-        'config:' . self::MENU_LINK_CONFIG_NAME,
-      ],
+      $this->discourseConfig->getConfigCacheTags(),
+      ['config:' . self::MENU_LINK_CONFIG_NAME],
     );
 
   }
