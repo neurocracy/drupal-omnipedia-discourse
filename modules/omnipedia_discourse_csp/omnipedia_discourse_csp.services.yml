@@ -1,8 +1,10 @@
 services:
 
+  _defaults:
+    autowire: true
+    autoconfigure: true
+
   omnipedia_discourse_csp.discourse_url_policy_event_subscriber:
     class: Drupal\omnipedia_discourse_csp\EventSubscriber\Csp\DiscourseUrlPolicyEventSubscriber
-    arguments:
-      - '@config.factory'
     tags:
       - { name: 'event_subscriber' }

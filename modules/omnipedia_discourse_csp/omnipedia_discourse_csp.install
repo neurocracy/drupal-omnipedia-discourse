@@ -19,3 +19,12 @@ function omnipedia_discourse_csp_update_10102(): void {
   \Drupal::service('kernel')->invalidateContainer();
 
 }
+
+/**
+ * Rebuild container for service autowiring.
+ */
+function omnipedia_discourse_csp_update_10103(): void {
+
+  \Drupal::service('kernel')->invalidateContainer();
+
+}
