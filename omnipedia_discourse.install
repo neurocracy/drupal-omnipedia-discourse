@@ -1,0 +1,12 @@
+<?php
+
+declare(strict_types=1);
+
+/**
+ * Rebuild container for addition of Discourse config and permalink resolver.
+ */
+function omnipedia_discourse_update_101001(): void {
+
+  \Drupal::service('kernel')->invalidateContainer();
+
+}

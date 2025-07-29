@@ -21,9 +21,7 @@ for [Omnipedia](https://omnipedia.app/).
 Before attempting to install this, you must add the Composer repositories as
 described in the installation instructions for these dependencies:
 
-* The [`omnipedia_core` module](https://gitlab.com/neurocracy/omnipedia/modules/omnipedia-core).
-
-* The [`omnipedia_main_page` module](https://gitlab.com/neurocracy/omnipedia/modules/omnipedia-main-page).
+* The [`omnipedia_core`](https://gitlab.com/neurocracy/omnipedia/modules/omnipedia-core), [`omnipedia_date`](https://gitlab.com/neurocracy/omnipedia/modules/omnipedia-date), and [`omnipedia_main_page`](https://gitlab.com/neurocracy/omnipedia/modules/omnipedia-main-page) modules.
 
 ----
 

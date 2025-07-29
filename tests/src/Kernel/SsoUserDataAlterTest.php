@@ -62,7 +62,15 @@ class SsoUserDataAlterTest extends KernelTestBase {
   /**
    * {@inheritdoc}
    */
-  protected static $modules = ['field', 'user', 'omnipedia_discourse'];
+  protected static $modules = [
+    'field',
+    'omnipedia_core',
+    'omnipedia_date',
+    'omnipedia_discourse',
+    'omnipedia_main_page',
+    'typed_entity',
+    'user',
+  ];
 
   /**
    * {@inheritdoc}

@@ -4,6 +4,16 @@ services:
     autowire: true
     autoconfigure: true
 
+  omnipedia_discourse.discourse_config:
+    class: Drupal\omnipedia_discourse\Service\DiscourseConfig
+
+  Drupal\omnipedia_discourse\Service\DiscourseConfigInterface: '@omnipedia_discourse.discourse_config'
+
+  omnipedia_discourse.discourse_permalink_resolver:
+    class: Drupal\omnipedia_discourse\Service\DiscoursePermalinkResolver
+
+  Drupal\omnipedia_discourse\Service\DiscoursePermalinkResolverInterface: '@omnipedia_discourse.discourse_permalink_resolver'
+
   omnipedia_discourse.sso_user_data:
     class: Drupal\omnipedia_discourse\Service\SsoUserData
     tags:
