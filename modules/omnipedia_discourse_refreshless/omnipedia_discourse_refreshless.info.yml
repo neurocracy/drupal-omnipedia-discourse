@@ -1,0 +1,12 @@
+name: Omnipedia - Discourse - RefreshLess integration
+type: module
+description: Provides <a href="https://www.drupal.org/project/refreshless">RefreshLess</a> integration for <a href="https://discourse.org/">Discourse</a> single sign on.
+package: Omnipedia
+core_version_requirement: ^10.0 || ^11.0
+php: 8.1
+
+dependencies:
+  - discourse_sso:discourse_sso
+  - hux:hux
+  - omnipedia_discourse:omnipedia_discourse
+  - refreshless:refreshless
