@@ -28,8 +28,8 @@
   "extra": {
     "patches": {
       "drupal/discourse_sso": {
-        "Missing config schema [#3344663]: https://www.drupal.org/project/discourse_sso/issues/3344663": "https://raw.githubusercontent.com/neurocracy/drupal-omnipedia-discourse/1.x/patches/drupal/discourse_sso/3344663-missing-config-schema.patch",
-        "Sites that don't grant 'access content' permission to anonymous users result in access denied when redirected to the Drupal site for log in [#3371060]: https://www.drupal.org/project/discourse_sso/issues/3371060": "https://raw.githubusercontent.com/neurocracy/drupal-omnipedia-discourse/1.x/patches/drupal/discourse_sso/3371060-add-new-login-permission.patch"
+        "Missing config schema [#3344663]: https://www.drupal.org/project/discourse_sso/issues/3344663": "https://gitlab.com/neurocracy/omnipedia/modules/omnipedia-discourse/-/raw/3da2f67b5b98a183efd6d34d0c8a349399795e28/patches/drupal/discourse_sso/3344663-missing-config-schema.patch",
+        "Sites that don't grant 'access content' permission to anonymous users result in access denied when redirected to the Drupal site for log in [#3371060]: https://www.drupal.org/project/discourse_sso/issues/3371060": "https://gitlab.com/neurocracy/omnipedia/modules/omnipedia-discourse/-/raw/3da2f67b5b98a183efd6d34d0c8a349399795e28/patches/drupal/discourse_sso/3371060-add-new-login-permission.patch"
       }
     }
   }
