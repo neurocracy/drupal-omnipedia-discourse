@@ -16,22 +16,12 @@
   ],
   "require": {
     "php": "^8.1",
-    "cweagans/composer-patches": "^1.7",
     "drupal/core": "^10.0 || ^11.0",
-    "drupal/discourse_sso": "^2.0@RC",
+    "drupal/discourse_sso": "^2.0@dev",
     "drupal/hux": "^1.1",
     "drupal/omnipedia_core": "^4.0@dev || ^5.0@dev || ^6.0@dev",
     "drupal/omnipedia_date": "^5.0@dev",
     "drupal/omnipedia_main_page": "^1.0@dev",
     "drupal/typed_entity": "^4.0"
-  },
-  "extra": {
-    "patches": {
-      "drupal/discourse_sso": {
-        "Missing config schema [#3344663]: https://www.drupal.org/project/discourse_sso/issues/3344663": "https://gitlab.com/neurocracy/omnipedia/modules/omnipedia-discourse/-/raw/3da2f67b5b98a183efd6d34d0c8a349399795e28/patches/drupal/discourse_sso/3344663-missing-config-schema.patch",
-        "Sites that don't grant 'access content' permission to anonymous users result in access denied when redirected to the Drupal site for log in [#3371060]: https://www.drupal.org/project/discourse_sso/issues/3371060": "https://gitlab.com/neurocracy/omnipedia/modules/omnipedia-discourse/-/raw/3da2f67b5b98a183efd6d34d0c8a349399795e28/patches/drupal/discourse_sso/3371060-add-new-login-permission.patch",
-        "Controller should use \\Drupal\\Core\\Url to build \"destination\" instead of doing so manually [#3538890]: https://www.drupal.org/project/discourse_sso/issues/3538890": "https://gitlab.com/neurocracy/omnipedia/modules/omnipedia-discourse/-/raw/e452bd8a31bbfb710403d6ea8abad834b859ca01/patches/drupal/discourse_sso/3538890-controller-use-url-object.patch"
-      }
-    }
   }
 }
