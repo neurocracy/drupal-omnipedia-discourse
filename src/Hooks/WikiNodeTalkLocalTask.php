@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Drupal\omnipedia_discourse\Hooks;
 
 use Drupal\Core\Cache\RefinableCacheableDependencyInterface;
+use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\Core\Url;
 use Drupal\hux\Attribute\Alter;
 use Drupal\omnipedia_core\Service\WikiNodeResolverInterface;
@@ -25,6 +26,9 @@ class WikiNodeTalkLocalTask {
   /**
    * Constructor; saves dependencies.
    *
+   * @param \Drupal\Core\Session\AccountProxyInterface $currentUser
+   *   The current user service.
+   *
    * @param \Drupal\omnipedia_discourse\Service\DiscourseConfigInterface $discourseConfig
    *   The Discourse configuration service.
    *
@@ -38,6 +42,7 @@ class WikiNodeTalkLocalTask {
    *   The Omnipedia wiki node resolver service.
    */
   public function __construct(
+    protected readonly AccountProxyInterface $currentUser,
     protected readonly DiscourseConfigInterface $discourseConfig,
     protected readonly DiscoursePermalinkResolverInterface $discoursePermalinkResolver,
     #[Autowire(service: 'Drupal\typed_entity\RepositoryManager')]
@@ -62,6 +67,18 @@ class WikiNodeTalkLocalTask {
     array &$data, string $routeName,
     RefinableCacheableDependencyInterface &$cacheability,
   ): void {
+
+    $cacheability->addCacheContexts(['user.permissions']);
+
+    // The core Navigation top bar will re-render local tasks in its top bar,
+    // which results in a fatal error due to our replaced Url not having a
+    // route. There doesn't seem to be a way to opt out of this behaviour as of
+    // Drupal 11.2.
+    //
+    // @see \Drupal\navigation\NavigationRenderer
+    if ($this->currentUser->hasPermission('access navigation')) {
+      return;
+    }
 
     if (!isset($data['tabs'][0]['entity.node.omnipedia_talk'])) {
       return;

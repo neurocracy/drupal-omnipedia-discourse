@@ -32,3 +32,17 @@ function omnipedia_discourse_update_101003(): void {
   \Drupal::service('router.builder')->rebuild();
 
 }
+
+
+/**
+ * Rebuild container, router, local tasks for Talk local task Navigation fixes.
+ */
+function omnipedia_discourse_update_101004(): void {
+
+  \Drupal::service('kernel')->invalidateContainer();
+
+  \Drupal::service('cache_tags.invalidator')->invalidateTags(['local_task']);
+
+  \Drupal::service('router.builder')->rebuild();
+
+}
