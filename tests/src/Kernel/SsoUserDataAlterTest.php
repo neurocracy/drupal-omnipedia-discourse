@@ -12,14 +12,15 @@ use Drupal\KernelTests\KernelTestBase;
 use Drupal\omnipedia_discourse\Service\SsoUserDataInterface;
 use Drupal\Tests\user\Traits\UserCreationTrait;
 use Drupal\user\UserStorageInterface;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 
 /**
  * Tests for the Omnipedia Discourse SSO user data service alter hook.
- *
- * @group omnipedia
- *
- * @group omnipedia_discourse
  */
+#[Group('omnipedia')]
+#[Group('omnipedia_discourse')]
+#[RunTestsInSeparateProcesses]
 class SsoUserDataAlterTest extends KernelTestBase {
 
   use UserCreationTrait {
